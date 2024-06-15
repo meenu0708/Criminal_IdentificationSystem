@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <style>
+        /* Registration Form Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    color: #333;
+}
+
+.registration-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.registration-form label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.registration-form input[type="text"],
+.registration-form input[type="password"] {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.registration-form button[type="submit"] {
+    background-color: #007bff;
+    width: 95%;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+/* Error Messages */
+.error-message {
+    color: red;
+}
+
+    </style>
+</head>
+<body style="background-image:url({% static 'images/about.jpg' %})">
+<h2 style="text-align:center;font-family:sans-serif;color:Black">Registration</h2>
+
+    <div class="reg_form">
+
+         <form method="post" class="registration-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Register</button>
+             <p><center><a href="/">Home</a></center></p>
+    </form>
+    </div>
+ {% for msg in messages %}
+    <h2 style="text-align:center;color:Black;">{{msg}}</h2>
+    {% endfor %}
+
+</body>
+</html>

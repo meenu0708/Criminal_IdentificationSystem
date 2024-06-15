@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <title>Criminal Identification system</title>
+    <style>
+    body {
+      background-image: url('{% static 'images/backgnd.jpg' %}');
+      background-size: cover; /* Cover the entire background */
+      background-position: center; /* Center the background image */
+      background-attachment: fixed;
+    }
+
+   .container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-height:500px;
+}
+    .file-upload {
+    text-align: center;
+}
+    .file-upload h3 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+    .file-upload form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+     .file-upload form button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+      .file-upload form button:hover {
+            background-color: #45a049;
+        }
+       .upload-image {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .upload-image img {
+            max-width: 100%;
+            height: 250px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    .compare-btn-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+    .compare-btn-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .compare-btn-container button:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+{% include 'navbar.html' %}
+<div class="container">
+    <div class="file-upload">
+        <h3>PICK A SKETCH</h3>
+        <form action="upload_sketch" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form.as_p}}
+            {% if obj %}
+            <button id="new-image-btn" class="btn btn-lg btn-primary">Upload a New Sketch</button>
+            {% else %}
+            <button type="submit" class="btn btn-lg btn-success">Upload</button>
+            {% endif %}
+        </form>
+    </div>
+
+    <div class="upload-image">
+        {% if obj %}
+        <img src="{{ obj.image.url }}" alt="image">
+        {% endif %}
+    </div>
+    <div class="compare-btn-container">
+        <form action="{% url 'sketch_match' %}" method="get">
+            {% csrf_token %}
+            <button type="submit">Find the Match</button>
+        </form>
+    </div>
+</div>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>

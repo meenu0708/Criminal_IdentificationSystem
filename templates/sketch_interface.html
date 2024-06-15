@@ -1,0 +1,190 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sketching Interface</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{%static 'css/style.css' %}">
+    <script src="https://kit.fontawesome.com/95607d3679.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+{% include 'navbar.html' %}
+<div class="container">
+    <div class="narrow-section">
+        <p><a href="{% url 'feature_detail' 'head' %}" style="color: white; text-decoration: none;">Head</a></p>
+        <p><a href="{% url 'feature_detail' 'hair' %}" style="color: white; text-decoration: none;">Hair</a></p>
+        <p><a href="{% url 'feature_detail' 'eyes' %}" style="color: white; text-decoration: none;">Eyes</a></p>
+        <p><a href="{% url 'feature_detail' 'eyebrows' %}" style="color: white; text-decoration: none;">Eyebrows</a></p>
+        <p><a href="{% url 'feature_detail' 'nose' %}" style="color: white; text-decoration: none;">Nose</a></p>
+        <p><a href="{% url 'feature_detail' 'lips' %}" style="color: white; text-decoration: none;">Lips</a></p>
+        <p><a href="{% url 'feature_detail' 'mustache' %}" style="color: white; text-decoration: none;">Mustache</a></p>
+        <p><a href="{% url 'feature_detail' 'more' %}" style="color: white; text-decoration: none;">More</a></p>
+    </div>
+
+    <div class="middle-section">
+        <canvas id="sketch-canvas" width="400" height="400"  ondrop="drop(event)" ondragover="allowDrop(event)">
+        </canvas><br>
+    </div>
+
+
+    <div class="wide-section">
+        <div class="d-flex justify-content-center mt-3">
+            <form id="save-image-form" method="post" action="{% url 'save_image' %}">
+            {% csrf_token %}
+            <input type="hidden" name="canvas_image_data" id="canvas-image-data">
+                <input type="text" name="image_name" id="image-name" placeholder="Save as" style="width: 120px;">
+            <button type="button" class="btn btn-primary custom-btn mr-4" onclick="saveImage()">SAVE IMAGE</button>
+            </form>
+            <button id="reset-button" class="btn btn-danger custom-btn mr-4">RESET</button>
+        </div>
+
+        {% if feature_options %}
+        <div class="container-fluid mt-3 wide-container">
+            <div class="row">
+                <div class="col-12">
+                    <h6 style="color: white;">CHOOSE {{ feature.name|upper }} FROM BELOW:</h6>
+                </div>
+            </div><br>
+            <div class="row">
+                {% for feature_option in feature_options %}
+                    <div class="col-md-4 mb-4">
+                        <div class="image-box">
+                            <img src="{{ feature_option.image.url }}" class="img-fluid feature-option" data-url="{{ feature_option.image.url }}" width="50" height="50" alt="{{ feature_option.feature.name }}" draggable="true">
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('sketch-canvas');
+    const ctx = canvas.getContext('2d');
+    const droppedFeatures = []; // Array to store dropped features
+
+    // Load saved image from local storage if available
+    const savedImage = localStorage.getItem('sketch_image');
+    if (savedImage) {
+        const img = new Image();
+        img.src = savedImage;
+        img.onload = function() {
+            ctx.drawImage(img, 0, 0);
+        };
+    }
+
+    // Add event listeners for drag and drop
+    const featureOptions = document.querySelectorAll('.feature-option');
+    featureOptions.forEach(option => {
+        option.addEventListener('dragstart', dragStart);
+        option.addEventListener('dragend', dragEnd);
+    });
+
+    function dragStart(e) {
+        e.dataTransfer.setData('text/plain', e.target.dataset.url);
+        e.dataTransfer.setData('feature', e.target.alt);
+    }
+
+    function dragEnd(e) {
+        // No action needed
+    }
+
+    canvas.addEventListener('dragover', dragOver);
+    canvas.addEventListener('drop', drop);
+
+    function dragOver(e) {
+        e.preventDefault();
+    }
+
+    function drop(e) {
+        e.preventDefault();
+        const imageUrl = e.dataTransfer.getData('text/plain');
+        const featureName = e.dataTransfer.getData('feature');
+        const img = new Image();
+        img.src = imageUrl;
+        img.onload = function() {
+            const rect = canvas.getBoundingClientRect();
+            const offsetX = e.clientX - rect.left;
+            const offsetY = e.clientY - rect.top;
+            let width = 100; // Default width
+            let height = 100; // Default height
+            // Adjust size based on feature name
+            if (featureName === 'Head') {
+                width = 200;
+                height = 260;
+            }  else if (featureName === 'Hair') {
+                width = 230;
+                height = 310;
+            }  else if (featureName === 'Eyes') {
+                width = 130;
+                height = 50;
+            } else if (featureName === 'Eyebrows') {
+                width = 130;
+                height = 20;
+            } else if (featureName === 'Nose') {
+                width = 40;
+                height = 60;
+            } else if (featureName === 'Nose') {
+                width = 50;
+                height = 60;
+            } else if (featureName === 'Lips') {
+                width = 60;
+                height = 20;
+            } else if (featureName === 'Mustache') {
+                width = 80;
+                height = 20;
+            } else if (featureName === 'Mustache') {
+                width = 60;
+                height = 20;
+            }  else if (featureName === 'More') {
+                width = 30;
+                height = 60;
+            }
+
+             // Add more conditions for other features as needed
+            const x = offsetX - width / 2; // Center the image horizontally
+            const y = offsetY - height / 2; // Center the image vertically
+            // Draw the feature shape on the canvas
+            ctx.drawImage(img, x, y, width, height);
+            // Store the dropped feature and its position
+            droppedFeatures.push({ x, y, width, height });
+            localStorage.setItem('sketch_image', canvas.toDataURL());
+        };
+    }
+    // Function to save the canvas image data from local storage
+    function saveImage() {
+        // Retrieve the canvas image data URL from local storage
+        const canvasImageData = localStorage.getItem('sketch_image');
+        // Set the canvas image data URL as the value of the hidden input field
+        document.getElementById('canvas-image-data').value = canvasImageData;
+
+        // Submit the form
+        document.getElementById('save-image-form').submit();
+}
+</script>
+
+<script>
+    // Get a reference to the reset button
+    const resetButton = document.getElementById('reset-button');
+
+    // Add an event listener to the button
+    resetButton.addEventListener('click', function() {
+    // Clear the canvas
+    const canvas = document.getElementById('sketch-canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    localStorage.removeItem('sketch_image');
+     });
+
+</script>
+
+
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+
+</body>
+</html>

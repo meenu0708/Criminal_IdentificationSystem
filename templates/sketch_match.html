@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <title>Criminal Identification system</title>
+    <style>
+    body {
+      background-image: url('{% static 'images/backgnd.jpg' %}');
+      background-size: cover; /* Cover the entire background */
+      background-position: center; /* Center the background image */
+      background-attachment: fixed;
+    }
+
+  .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        }
+     .boxes {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+     .box {
+            margin: 10px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+     .upload-image img,
+        .result-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+     .description h3 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+     .description p {
+            font-size: 18px;
+            color: #555;
+        }
+      .match-found {
+            font-size: 24px;
+            color: green;
+        }
+     .btn {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+{% include 'navbar.html' %}
+<div class="container">
+    <div class="boxes">
+        <div class="box upload-image">
+            {% if obj %}
+            <img src="{{obj.image.url}}" alt="Sketch" class="img-thumbnail" height="250px" width="200px">
+            {% endif %}
+        </div>
+        <div class="match-found">Match Found</div>
+
+        <div class="box result-image">
+            {% if match_image %}
+             <img src="{{ MEDIA_URL }}{{ match_image }}" alt="image" class="img-thumbnail" height="250px" width="200px">
+            {% endif %}
+        </div>
+        <div class="box description">
+            <h3>Match Score</h3>
+            <p>{{ score }} %</p>
+        </div>
+    </div>
+
+    <div class="box new-upload-btn">
+        <form action="{% url 'upload_sketch' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <button type="submit" class="btn">Upload New Sketch</button>
+        </form>
+    </div>
+</div>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>

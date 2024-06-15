@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>SuccessPage</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <style>
+    .success-box {
+            background-color: #d4edda; /* Greenish background color */
+            border: 1px solid #c3e6cb; /* Light green border */
+            color: #155724; /* Dark green text color */
+            padding: 20px; /* Padding around the content */
+            border-radius: 4px; /* Rounded corners */
+            width: 300px; /* Set width of the box */
+            height: 150px; /* Set height of the box */
+            position: absolute; /* Positioning */
+            top: 40%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%); /* Adjust to center */
+            text-align: center; /* Center text */
+        }
+
+    </style>
+</head>
+<body>
+{% include 'navbar.html' %}
+<div class="success-box">
+    <p>{{ Success }}</p>
+    <a href="{% url 'sketch_interface' %}" class="btn btn-primary">Create New Sketch</a>
+</div>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>
