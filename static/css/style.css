@@ -1,0 +1,99 @@
+.container {
+
+            margin: 10px auto;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height:625px;
+
+        }
+.narrow-section {
+
+        width: 10%;
+        background-color: #4682B4;
+        display: flex;
+        flex-direction: column; /* Display items vertically */
+        align-items: center; /* Center items horizontally */
+    }
+ .narrow-section p {
+    color: white;
+    margin: 0; /* Remove default margin */
+    flex: 1; /* Allow each paragraph to take up equal space vertically */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ }
+
+.middle-section {
+
+        width: 55%;
+        background-color: #CCCCFF; /* Set background color */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+  #sketch-canvas {
+
+    border: 1px solid #000000; /* Add border for visibility */
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#selected-head-container {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+ .wide-section {
+
+        width: 35%;
+        background-color: #4682B4;
+        justify-content: center;
+         align-items: center;
+         padding: 20px;
+    }
+ .wide-container {
+    background-color: inherit; /* Inherit background color from parent */
+    padding: 10px; /* Add padding */
+}
+ .custom-btn {
+    background-color: #4682B4;
+    color: #fff;
+    border-color: #fff;
+    margin-right:20px;
+}
+
+.image-wrapper {
+  max-width: 100%;
+  height: auto;
+}
+.image-box {
+    border: 1px solid #ccc;
+    padding: 1px;
+    border-radius: 5px;
+    width: 80px; /* Set a fixed width */
+    height: 80px; /* Set a fixed height */
+    margin: 1px; /* Add some margin between the boxes */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.success-box {
+            background-color: #d4edda; /* Greenish background color */
+            border: 1px solid #c3e6cb; /* Light green border */
+            color: #155724; /* Dark green text color */
+            padding: 10px 15px; /* Padding around the content */
+            margin: 20px 0; /* Margin to separate from other elements */
+            border-radius: 4px; /* Rounded corners */
+        }
+
+#image-name {
+    width: 100px;
+}
